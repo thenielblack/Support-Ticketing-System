@@ -12,9 +12,16 @@
         <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
         <!-- Scripts -->
+        <script src="https://unpkg.com/htmx.org@2.0.4"></script>
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased">
+    <script>
+        document.body.addEventListener('htmx:configRequest', (event) => {
+            const token = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+            event.detail.headers['X-CSRF-TOKEN'] = token;
+        });
+    </script>
         <div class="min-h-screen bg-gray-100">
             @include('layouts.navigation')
 

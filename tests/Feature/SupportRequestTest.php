@@ -8,13 +8,26 @@ use Tests\TestCase;
 
 class SupportRequestTest extends TestCase
 {
-    /**
-     * A basic feature test example.
-     */
-    public function test_example(): void
-    {
-        $response = $this->get('/');
+    use RefreshDatabase, WithFaker;
 
-        $response->assertStatus(200);
+    /**
+     * Test creating a support request.
+     */
+    public function test_can_create_support_request(): void
+    {
+        $data = [
+            'name' => $this->faker->name(),
+            'email' => $this->faker->safeEmail(),
+            'description' => $this->faker->paragraph(),
+        ];
+
+        $response = $this->post(route('support-request.store'), $data);
+
+        $response->assertRedirect(route('support-request.create'));
+        $response->assertSessionHas('success');
+        $this->assertDatabaseHas('support_requests', [
+            'name' => $data['name'],
+            'email' => $data['email'],
+        ]);
     }
 }

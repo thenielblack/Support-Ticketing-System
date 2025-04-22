@@ -10,6 +10,8 @@ Route::get('/', function () {
 
 Route::get('/support-request', [SupportRequestController::class, 'create'])->name('support-request.create');
 Route::post('/support-request', [SupportRequestController::class, 'store'])->name('support-request.store');
+Route::post('/support-requests/{id}/update-status', [SupportRequestController::class, 'updateStatus'])->name('support-requests.updateStatus');
+
 
 Route::get('/dashboard', function () {
     return view('dashboard');

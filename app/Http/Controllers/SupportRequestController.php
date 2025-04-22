@@ -40,10 +40,18 @@ class SupportRequestController extends Controller
     public function index(): View|Application|Factory
     {
 
-//        TODO: implement pagination
-        $supportRequests = SupportRequest::latest()->get();
+        $supportRequests = SupportRequest::latest()->paginate(20);
 
         return view('/support-requests-list', compact('supportRequests'));
+    }
+
+    public function updateStatus(Request $request, $id): View
+    {
+        $supportRequest = SupportRequest::findOrFail($id);
+        $supportRequest->status = $request->status;
+        $supportRequest->save();
+
+        return view('molecules.support-request-row', ['supportRequest' => $supportRequest]);
     }
 
 }
